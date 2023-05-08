@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="View\EKOLYU7TTBDN5OTZNBMNDNCGYA.jpg" />
+    <None Remove="View\pattern.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="View\EKOLYU7TTBDN5OTZNBMNDNCGYA.jpg" />
+    <Resource Include="View\pattern.png" />
+  </ItemGroup>
+
+</Project>

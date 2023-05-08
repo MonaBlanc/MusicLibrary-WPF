@@ -1,0 +1,233 @@
+﻿<Window x:Class="MusicLibrary.View.MusicAlbumEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodel="clr-namespace:MusicLibrary.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:VmMusicAlbum}"
+        mc:Ignorable="d" ResizeMode="NoResize"
+        Title="MusicAlbumEditor" Height="450" Width="800">
+    <Grid Background="#0B132B">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <!--<Rectangle Grid.ColumnSpan="2" Stroke="Black" StrokeThickness="2"  Width="580" Height="420" />-->
+        <Grid Grid.Column="0" Height="400">
+            <Border Height="400" BorderThickness="0,0,1,0">
+                <Border.BorderBrush>
+                    <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <GeometryDrawing Brush="#FF5BC0BE">
+                                    <GeometryDrawing.Geometry>
+                                        <GeometryGroup>
+                                            <RectangleGeometry Rect="0,0,50,50" />
+                                            <RectangleGeometry Rect="50,50,50,50" />
+                                        </GeometryGroup>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Border.BorderBrush>
+            </Border>
+
+            <ListView ItemsSource="{Binding albums}" VerticalAlignment="Top" Height="350" SelectedItem="{Binding SelectedAlbum}" BorderBrush="#FF5BC0BE" BorderThickness="2,2,2,2" Margin="10,0,10,0" >
+                <ListView.Resources>
+
+                    <!-- Template that is used upon selection of an Area -->
+                    <ControlTemplate x:Key="SelectedTemplate" TargetType="ListViewItem">
+                        <Border  Background="#3A506B" Margin="20 0 20 20" CornerRadius="5">
+                            <Grid Height="70" Width="145"  >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.ZIndex="1"  FontSize="15" FontWeight="SemiBold" Foreground="#D6FFF9" FontStyle="Italic" FontFamily="Cascadia Code" Content="{Binding ComposerName}"/>
+                                <Label Grid.Row="1" Grid.ZIndex="1" FontWeight="Bold" FontSize="18" Foreground="#D6FFF9" FontFamily="Cascadia Code" Content="{Binding AlbumName}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <!-- Base Template that is replaced upon selection -->
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border Grid.RowSpan="2" Margin="20 0 20 20" Background="#d8d8d8"  CornerRadius="5">
+                                        <Grid Height="70" Width="145"  >
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Label Grid.Row="0" Grid.ZIndex="1" Foreground="#3A506B" FontSize="15" FontWeight="SemiBold" FontStyle="Italic" FontFamily="Cascadia Code" Content="{Binding ComposerName}"/>
+                                            <Label Grid.Row="1" Grid.ZIndex="1" Foreground="#3A506B" FontWeight="Bold" FontSize="18" FontFamily="Cascadia Code" Content="{Binding AlbumName}"/>
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Template" Value="{StaticResource SelectedTemplate}" />
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                </ListView.Resources>
+                <ListView.Background>
+                    <ImageBrush Stretch="None" ImageSource="/View/pattern.png"/>
+                </ListView.Background>
+
+            </ListView>
+            <Grid Height="35" VerticalAlignment="Bottom"  Margin="10 10 10 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Button Command="{Binding addNewAlbum}"  Grid.Column="0"  Margin="10 0 10 0" Content="Add Album" Background="#D6FFF9" Foreground="#3A506B" FontFamily="Franklin Gothic Medium" FontWeight="Bold" BorderThickness="2,2,2,2">
+                    <Button.BorderBrush>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#FF6FFFE9"/>
+                            <GradientStop Color="#FF5BC0BE" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Button.BorderBrush>
+                </Button>
+                <Button Command="{Binding deleteAlbum}" Grid.Column="1"  Margin="10 0 10 0" Content="Delete Album" Foreground="#3A506B" FontFamily="Franklin Gothic Medium" FontWeight="Bold" Background="#D6FFF9" BorderThickness="2,2,2,2">
+                    <Button.BorderBrush>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#FF6FFFE9"/>
+                            <GradientStop Color="#FF5BC0BE" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Button.BorderBrush>
+                </Button>
+            </Grid>
+            <!--<Border BorderThickness="0 0 2 0" Height="400"  BorderBrush="Black"/>-->
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="11*"/>
+                <RowDefinition Height="89*"/>
+                <RowDefinition Height="289*"/>
+                <RowDefinition Height="35*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="0,11,0,0" Grid.RowSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Content="New Composer:" Foreground="#FF6FFFE9" FontFamily="Cascadia Code" Grid.Column="1" Height="27"/>
+                <Label Grid.Row="1" FontSize="16" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="31,0,0,0" Content="New Album:" Foreground="#FF6FFFE9" FontFamily="Cascadia Code" Grid.ColumnSpan="2" Height="27"/>
+                <TextBox Grid.Row="0" FontSize="15" Height="28" VerticalAlignment="Center" Grid.Column="2" Width="240" HorizontalAlignment="Left" Text="{Binding ComposerName}" Background="#FF1C2541" Foreground="#FFD6FFF9" FontFamily="Cascadia Code" FontStyle="Italic"  Cursor="Pen"/>
+                <TextBox Grid.Row="1" FontSize="15" Height="28" VerticalAlignment="Center" Grid.Column="2" Text="{Binding AlbumName}" Background="#FF1C2541" Foreground="#FFD6FFF9" FontFamily="Cascadia Code" Margin="0,0,26,0" Cursor="Pen"/>
+            </Grid>
+            <Grid Grid.Row="1" Margin="0,89,0,34" Grid.RowSpan="3">
+                <VirtualizingStackPanel Margin="0,-5,0,10">
+                    <Label  FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="20 10 0 10" Content="Tracks :" Foreground="#FF6FFFE9" FontFamily="Cascadia Code"/>
+                    <ListView x:Name="List" SelectedItem="{Binding SelectedTrack}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="173" VerticalAlignment="Top" Margin="10,0,10,0" ItemsSource="{Binding TrackList}"  BorderBrush="#FF5BC0BE" BorderThickness="2,2,2,2">
+                        <ListView.Resources>
+
+                            <!-- Template that is used upon selection of an Area -->
+                            <ControlTemplate x:Key="SelectedTemplate" TargetType="ListViewItem">
+                                <Border Margin="0 0 0 5" Background="#3A506B" Cursor="Hand" >
+                                    <Grid  >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" HorizontalAlignment="Right" Grid.ZIndex="1"  FontSize="15" FontWeight="SemiBold" Foreground="#D6FFF9" FontFamily="Cascadia Code" Content="{Binding TrackID}"/>
+                                        <Label Grid.Column="1" Grid.ZIndex="1"  FontSize="15" FontWeight="SemiBold" Foreground="#D6FFF9" FontFamily="Cascadia Code" Content="-"/>
+                                        <Label Grid.Column="2" Grid.ZIndex="1" FontWeight="Bold" FontSize="15" Foreground="#D6FFF9" FontFamily="Cascadia Code" Content="{Binding Title}"/>
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <!-- Base Template that is replaced upon selection -->
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <Border Margin="0 0 0 5" Background="#D6FFF9" Cursor="Hand"  >
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="30"/>
+                                                        <ColumnDefinition Width="20"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Grid.Column="0" HorizontalAlignment="Right" Grid.ZIndex="1"  FontSize="15" FontWeight="SemiBold" Foreground="#3A506B" FontFamily="Cascadia Code" Content="{Binding TrackID}"/>
+                                                    <Label Grid.Column="1" Grid.ZIndex="1"  FontSize="15" FontWeight="SemiBold" Foreground="#3A506B" FontFamily="Cascadia Code" Content="-"/>
+                                                    <Label Grid.Column="2" Grid.ZIndex="1" FontWeight="Bold" FontSize="15" Foreground="#3A506B" FontFamily="Cascadia Code" Content="{Binding Title}"/>
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsSelected" Value="true" />
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="Template" Value="{StaticResource SelectedTemplate}" />
+                                    </MultiTrigger>
+                                </Style.Triggers>
+                            </Style>
+
+                        </ListView.Resources>
+                        <ListView.Background>
+                            <ImageBrush ImageSource="/View/pattern.png" Stretch="None"/>
+                        </ListView.Background>
+
+                    </ListView>
+
+                    <Grid  Margin="10,-40,10,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Margin="10,47,52,-37" Text="{Binding NewTrack}" FontSize="16" Foreground="#FFD6FFF9" FontFamily="Cascadia Code" Grid.ColumnSpan="2" Background="#FF1C2541" Cursor="Pen" />
+                        <Button Command="{Binding addNewTrack}" Grid.Column="1"  Margin="107,47,109,-37" Content="Add Track" BorderThickness="2,2,2,2" Background="#FFD6FFF9" Foreground="#3A506B" FontWeight="Bold" FontFamily="Franklin Gothic Medium" Grid.ColumnSpan="2" Focusable="False">
+                            <Button.BorderBrush>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="#FF6FFFE9"/>
+                                    <GradientStop Color="#FF5BC0BE" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Button.BorderBrush>
+                        </Button>
+                        <Button Command="{Binding deleteTrack}" Grid.Column="2"  Margin="50,47,10,-37" Content="Delete Track" BorderThickness="2,2,2,2" Background="#FFD6FFF9" Foreground="#3A506B" FontWeight="Bold" FontFamily="Franklin Gothic Medium" Focusable="False">
+                            <Button.BorderBrush>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="#FF6FFFE9"/>
+                                    <GradientStop Color="#FF5BC0BE" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Button.BorderBrush>
+                        </Button>
+                    </Grid>
+
+                </VirtualizingStackPanel>
+
+
+            </Grid>
+            <Button Grid.Row="3"  Command="{Binding openNewWindow}" Margin="20,1,20,0" Content="Edit Album details in new window" Background="#FFD6FFF9" Foreground="#3A506B" FontFamily="Franklin Gothic Medium" FontSize="14" FontStyle="Italic">
+                <Button.BorderBrush>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FF6FFFE9"/>
+                        <GradientStop Color="#FF5BC0BE" Offset="1"/>
+                    </RadialGradientBrush>
+                </Button.BorderBrush>
+            </Button>
+
+        </Grid>
+    </Grid>
+</Window>
