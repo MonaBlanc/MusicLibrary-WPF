@@ -13,7 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="View\EKOLYU7TTBDN5OTZNBMNDNCGYA.jpg" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="View\pattern.png" />
   </ItemGroup>
 
