@@ -8,26 +8,28 @@ using System.Windows;
 using System.Windows.Input;
 using MusicLibrary.Helper;
 using MusicLibrary.Model;
-using MusicLibrary.View;
 
 namespace MusicLibrary.ViewModel
 {
-    public class VmMusicAlbum : INotifyPropertyChanged
+    public class VmMusicAlbum : ViewModelBase
     {
         //Liste d'albums 
         public ObservableCollection<Album> _albums;
+        private readonly IMainView _view;
 
-        public VmMusicAlbum(ObservableCollection<Album> albumList)
+        public interface IMainView
+        {
+            void DisplayError(string AlbumName, string ComposerName);
+            void OpenNewWindow(VmMusicAlbum currentViewModel);
+        }
+
+
+        public VmMusicAlbum(ObservableCollection<Album> albumList, IMainView view)
         {
             _albums = albumList ?? new ObservableCollection<Album>();
             SelectedAlbum = albums.FirstOrDefault();
             SelectedTrack = TrackList?.FirstOrDefault();
-
-        }
-
-        public VmMusicAlbum()
-        {
-            
+            _view = view;
         }
 
         private string _composerName;
@@ -68,11 +70,11 @@ namespace MusicLibrary.ViewModel
             set
             {
                 _selectedAlbum = value;
-                    
-                    TrackList = _selectedAlbum?.AlbumTracks;
-                    AlbumName = _selectedAlbum?.AlbumName;
-                    ComposerName = _selectedAlbum?.ComposerName;
-                
+
+                TrackList = _selectedAlbum?.AlbumTracks;
+                AlbumName = _selectedAlbum?.AlbumName;
+                ComposerName = _selectedAlbum?.ComposerName;
+
                 OnPropertyChanged();
             }
         }
@@ -98,44 +100,32 @@ namespace MusicLibrary.ViewModel
             }
         }
 
-        /*public Track SelectedTrack
-        {
-            get { return _selectedTrack; }
-            set { _selectedTrack = value;
-                TrackTitle = _selectedTrack.Title;
-                OnPropertyChanged();
-            }
-        }*/
-
         private string _newTrack;
 
         public string NewTrack
         {
             get { return _newTrack; }
-            set { _newTrack = value;
-                OnPropertyChanged(); }
+            set { _newTrack = value; OnPropertyChanged(); }
         }
-
 
         public void AddNewAlbum()
         {
-            if (albums.Any(x => x.AlbumName == AlbumName && x.ComposerName == ComposerName ))
+            if (albums.Any(x => x.AlbumName == AlbumName && x.ComposerName == ComposerName))
             {
-                MessageBox.Show("The album : " + AlbumName + " and composer : " + ComposerName + " already exists", "Duplicate Entry");
+                _view.DisplayError(AlbumName, ComposerName);
             }
             else
             {
                 TrackList = new ObservableCollection<Track>();
                 albums.Add(new Album { AlbumName = AlbumName, ComposerName = ComposerName, AlbumTracks = TrackList });
                 SelectedAlbum = albums.FirstOrDefault(x => x.AlbumName == AlbumName && x.ComposerName == ComposerName);
-                MessageBox.Show("New album successfully created", "New Album");
             }
         }
+
         public void DeleteAlbum()
         {
             albums.Remove(SelectedAlbum);
         }
-
 
         public void AddNewTrack()
         {
@@ -144,13 +134,13 @@ namespace MusicLibrary.ViewModel
             {
                 newId = SelectedAlbum.AlbumTracks.Max(x => x.TrackID) + 1;
             }
-            SelectedAlbum.AlbumTracks.Add(new Track() { Title = NewTrack, TrackID = newId});
+            SelectedAlbum.AlbumTracks.Add(new Track() { Title = NewTrack, TrackID = newId });
         }
+
         public void DeleteTrack()
         {
             albums.FirstOrDefault(x => x.AlbumName == SelectedAlbum.AlbumName && x.ComposerName == SelectedAlbum.ComposerName).AlbumTracks.Remove(SelectedTrack);
-            /*            SelectedAlbum.AlbumTracks = new ObservableCollection<Track>(SelectedAlbum.AlbumTracks.Distinct());
-            */
+
             foreach (var track in TrackList)
             {
                 track.TrackID = TrackList.IndexOf(track);
@@ -158,103 +148,36 @@ namespace MusicLibrary.ViewModel
             }
 
             OnPropertyChanged(nameof(TrackList));
-
         }
 
         public void OpenNewWindow()
         {
-            var albumDetails = new AlbumDetails
-            {
-                DataContext = this
-            };
-            albumDetails.Show();
+            _view.OpenNewWindow(this);
         }
-        private bool CanDeleteTrack
-        {
-            get
-            {
-                return SelectedTrack != null;
-            }
 
-        }
-        private bool CanDeleteAlbum
-        {
-            get
-            {
-                return SelectedAlbum != null;
-            }
+        private bool CanDeleteTrack => SelectedTrack != null;
+        private bool CanDeleteAlbum => SelectedAlbum != null;
+        public bool CanAddNewAlbum => !(string.IsNullOrWhiteSpace(AlbumName) || string.IsNullOrWhiteSpace(ComposerName));
+        public bool CanAddNewTrack => !string.IsNullOrWhiteSpace(NewTrack);
+        private bool CanOpenNewWindow => SelectedAlbum != null;
 
-        }
-        public bool canAddNewalbum
-        {
-            get { return !(string.IsNullOrWhiteSpace(AlbumName) || string.IsNullOrWhiteSpace(ComposerName)); }
-
-        }
         private ICommand _addNewAlbum;
-        public ICommand addNewAlbum
-        {
-            get
-            {
-                return _addNewAlbum ?? (_addNewAlbum = new CommandHandler(() => AddNewAlbum(), () => canAddNewalbum));
-            }
-        }
+        public ICommand AddNewAlbumCommand => _addNewAlbum ??= new CommandHandler(AddNewAlbum, () => CanAddNewAlbum);
+
         private ICommand _deleteAlbum;
-        public ICommand deleteAlbum
-        {
-            get
-            {
-                return _deleteAlbum ?? (_deleteAlbum = new CommandHandler(() => DeleteAlbum(), () => CanDeleteAlbum));
-            }
-        }
-
-
-
-
-        public bool canAddnewTrack
-        {
-            get { return !string.IsNullOrWhiteSpace(NewTrack); }
-
-        }
-
+        public ICommand DeleteAlbumCommand => _deleteAlbum ??= new CommandHandler(DeleteAlbum, () => CanDeleteAlbum);
 
         private ICommand _addNewTrack;
-
-        public ICommand addNewTrack
-        {
-            get
-            {
-                return _addNewTrack ?? (_addNewTrack = new CommandHandler(() => AddNewTrack(), () => canAddnewTrack));
-            }
-        }
+        public ICommand AddNewTrackCommand => _addNewTrack ??= new CommandHandler(AddNewTrack, () => CanAddNewTrack);
 
         private ICommand _deleteTrack;
-
-        public ICommand deleteTrack
-        {
-            get
-            {
-                return _deleteTrack ?? (_deleteTrack = new CommandHandler(() => DeleteTrack(), () => CanDeleteTrack));
-            }
-        }
+        public ICommand DeleteTrackCommand => _deleteTrack ??= new CommandHandler(DeleteTrack, () => CanDeleteTrack);
+        
         private ICommand _openNewWindow;
 
-        public ICommand openNewWindow
-        {
-            get
-            {
-                return _openNewWindow ?? (_openNewWindow = new CommandHandler(() => OpenNewWindow(), () => true));
-            }
-        }
+        public ICommand OpenNewWindowCommand => _openNewWindow ??= new CommandHandler(OpenNewWindow, () => CanOpenNewWindow);
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            var handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                var e = new PropertyChangedEventArgs(propertyName);
-                handler(this, e);
-            }
-        }
+
     }
 }

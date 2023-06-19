@@ -8,13 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="View\EKOLYU7TTBDN5OTZNBMNDNCGYA.jpg" />
-    <None Remove="View\pattern.png" />
+    <None Remove="View\logo.png" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <Resource Include="View\EKOLYU7TTBDN5OTZNBMNDNCGYA.jpg" />
-    <Resource Include="View\pattern.png" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+    <ProjectReference Include="..\MusicLibrary.ViewModel\MusicLibrary.ViewModel.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Resource Include="View\logo.png" />
   </ItemGroup>
 
 </Project>
