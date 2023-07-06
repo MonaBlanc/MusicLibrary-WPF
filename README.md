@@ -1,46 +1,50 @@
 
-# Music Library
+# Music Library (Bibliothèque Musicale)
 
-Le code est une application de bibliothèque musicale qui permet de gérer une collection d'albums de musique. Il utilise des classes et des collections pour représenter les albums et les pistes, ainsi que des fenêtres pour l'interface utilisateur. Les fonctionnalités incluent :
+Le projet **Bibliothèque Musicale** est une application WPF qui permet aux utilisateurs de gérer une collection d'albums de musique et de leurs pistes. Elle offre des fonctionnalités pour ajouter, supprimer et modifier des albums et des pistes, ainsi que la possibilité d'ouvrir une nouvelle fenêtre pour afficher des informations détaillées sur un album sélectionné.
 
-Ajouter un nouvel album avec un nom et un compositeur
-Supprimer un album existant
-Ajouter une nouvelle piste à un album existant
-Supprimer une piste existante d'un album
-Afficher les détails de l'album sélectionné
-Gérer la sélection de l'album et de la piste en temps réel
-L'application utilise également les concepts de notifications de propriété pour assurer la mise à jour de l'interface utilisateur en temps réel lors des modifications apportées aux albums et aux pistes.
-## Features
+##Prérequis
+- .NET Framework (version 6.0 ou supérieure)
+- Visual Studio 2022
 
-- Ajouter un nouvel album avec un nom et un compositeur
-- Supprimer un album existant
-- Ajouter une nouvelle piste à un album existant
-- Supprimer une piste existante d'un album
-- Afficher les détails de l'album sélectionné
-- Gérer la sélection de l'album et de la piste en temps réel
+##Dépendances
 
+Le projet utilise la bibliothèque *MahApps.Metro.IconPacks* pour fournir un ensemble d'icônes. Assurez-vous d'installer la dépendance avant d'exécuter le projet.
 
-## Documentation
+##Pour commencer
+Pour commencer avec le projet **Bibliothèque Musicale**, suivez ces étapes :
 
-Pour une meilleure utilisation de l'application, voici comment utiliser les fonctionnalités de la vue initiale :
+1. Récupérez l'archive fournie.
+2. Ouvrez la solution dans Visual Studio.
+3. Restaurez les packages NuGet si nécessaire.
+4. Compilez la solution.
+5. Exécutez l'application.
 
-### Ajouter/supprimer un Album
+##Structure du projet
+Le projet se compose des composants suivants :
 
-- Entrez le nom du compositeur et le titre de l'album dans le panneau de droite.
-- Cliquez sur "Ajouter album" pour l'ajouter à la liste du panneau de gauche.
-- Sélectionnez l'album souhaité dans la liste du panneau de gauche et cliquez sur "Supprimer album" pour le supprimer.
+***View*** (namespace : *MusicLibrary.View*) : Vous devez créer les vues correspondantes aux modèles de vue pour définir l'interface utilisateur.
 
-### Ajouter/supprimer une musique
+***ViewModel*** (namespace  : *MusicLibrary.ViewModel*) : Contient les classes de vue modèle responsables de la logique et de la liaison de données dans l'application.
 
-- Selectionnez un album dans la liste des albums
-- Entrez le nom de votre musique dans le champ situé a coté des boutons "Ajouter piste" et "Supprimer piste"
-- Utilisez les boutons "Ajouter piste" et "Supprimer piste" pour ajouter ou supprimer une musique respectivement.
+***Model*** (namespace : *MusicLibrary.Model*) : Définit les modèles de données utilisés dans l'application, tels que Album et Track.
 
-### Modifier un Album
+***Helper*** (namespace : *MusicLibrary.Helper*) : Contient des classes d'aide, y compris la classe CommandHandler utilisée pour implémenter les commandes.
 
-La fonctionnalité de modification d'album est accessible en cliquant sur "Ouvrir le détail dans une nouvelle fenêtre". Cela vous permettra de renommer votre compositeur et votre album grâce aux champs "Modifier compositeur" et "Modifier album", ainsi que d'ajouter ou de supprimer des pistes musicales à volonté.
-## Authors
+## Utilisation
+La classe principale de vue modèle est ***VmMusicAlbum***, qui représente la logique et les données de la vue principale de l'application. Elle offre les fonctionnalités suivantes :
 
-- [@Antoine Laguette](https://www.github.com/A-LGTT)
-- [@Juliette Bluem](https://www.github.com/Juju-sail)
+- **AddNewAlbum** : Ajoute un nouvel album à la collection.
+- **DeleteAlbum** : Supprime l'album actuellement sélectionné de la collection.
+- **AddNewTrack** : Ajoute une nouvelle piste à l'album actuellement sélectionné.
+- **DeleteTrack** : Supprime la piste actuellement sélectionnée de l'album actuellement sélectionné.
+- **OpenNewWindow** : Ouvre une nouvelle fenêtre pour afficher des informations détaillées sur l'album sélectionné.
+
+Le modèle de vue interagit avec la vue via l'interface ***IMainView***, qui définit les méthodes permettant d'afficher des erreurs et d'ouvrir de nouvelles fenêtres.
+
+L'application suit le modèle architectural MVVM (Modèle-Vue-Modèle de vue), qui sépare donc le projet en deux modules.
+## Auteurs
+
+- [@Kimberley Jacquemot](https://github.com/MonaBlanc)
+- [@Ayoub Ech Chamali](https://github.com/Draxx023)
 
