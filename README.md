@@ -3,11 +3,11 @@
 
 Le projet **Bibliothèque Musicale** est une application WPF qui permet aux utilisateurs de gérer une collection d'albums de musique et de leurs pistes. Elle offre des fonctionnalités pour ajouter, supprimer et modifier des albums et des pistes, ainsi que la possibilité d'ouvrir une nouvelle fenêtre pour afficher des informations détaillées sur un album sélectionné.
 
-##Prérequis
+## Prérequis
 - .NET Framework (version 6.0 ou supérieure)
 - Visual Studio 2022
 
-##Dépendances
+## Dépendances
 
 Le projet utilise la bibliothèque *MahApps.Metro.IconPacks* pour fournir un ensemble d'icônes. Assurez-vous d'installer la dépendance avant d'exécuter le projet.
 
@@ -20,7 +20,7 @@ Pour commencer avec le projet **Bibliothèque Musicale**, suivez ces étapes :
 4. Compilez la solution.
 5. Exécutez l'application.
 
-##Structure du projet
+## Structure du projet
 Le projet se compose des composants suivants :
 
 ***View*** (namespace : *MusicLibrary.View*) : Vous devez créer les vues correspondantes aux modèles de vue pour définir l'interface utilisateur.
